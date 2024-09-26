@@ -41,7 +41,6 @@ namespace BankingApi.EventReceiver.Tests
 		[Test]
 		public async Task Start_WhenValidMessage_ShouldProcessAndComplete()
 		{
-			// Arrange
 			var bankAccountId = Guid.NewGuid();
 			var messageId = Guid.NewGuid().ToString();
 			var eventMessage = new EventMessage
@@ -58,10 +57,8 @@ namespace BankingApi.EventReceiver.Tests
 
 			_mockServiceBusReceiver?.Setup(m => m.Complete(eventMessage)).Returns(Task.CompletedTask);
 
-			// Act
 			await _messageWorker?.Start();
 
-			// Assert
 			_mockLogger?.Verify(m => m.LogInformation($"Message received with Id: {messageId}"), Times.Once);
 			_mockLogger?.Verify(m => m.LogInformation($"Message {messageId} processed successfully."), Times.Once);
 		}
@@ -117,7 +114,6 @@ namespace BankingApi.EventReceiver.Tests
 		[Test]
 		public async Task DeserializeMessage_WhenInvalidJson_ShouldLogError()
 		{
-			// Arrange
 			var invalidMessageBody = "Invalid Json";
 			var message = new EventMessage
 			{
@@ -131,7 +127,6 @@ namespace BankingApi.EventReceiver.Tests
 
 			var result = _messageWorker?.DeserializeMessage(invalidMessageBody);
 
-			// Assert
 			Assert.That(result, Is.Null);
 			_mockLogger?.Verify(m => m.LogError(It.IsAny<string>(), It.IsAny<object[]>()), Times.Once);
 		}

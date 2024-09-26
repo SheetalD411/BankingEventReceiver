@@ -104,11 +104,11 @@ namespace BankingApi.EventReceiver
 				{
 					if (bankAccount.Balance < eventMessage.Amount)
 					{
-						_logger.LogError($"Insufficient funds for account {bankAccount.Id}");
+						_logger.LogError($"Insufficient funds in account {bankAccount.Id}");
 						throw new Exception("Insufficient funds");
 					}
 					bankAccount.Balance -= eventMessage.Amount;
-					_logger.LogInformation($"Debited {eventMessage.Amount} from account {bankAccount.Id}. New balance: {bankAccount.Balance}");
+					_logger.LogInformation($"Debited {eventMessage.Amount} from account {bankAccount.Id}. Updated balance: {bankAccount.Balance}");
 				}
 
 				_dbContext.Transactions.Add(transactionRecord);
